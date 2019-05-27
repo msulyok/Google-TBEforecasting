@@ -48,12 +48,19 @@ rkts<-ts(rkts[1:207], start=c(2014, 16), end=c(2018, 12), frequency=52)
 summary(rkts)
 summary(rkts17)
 
+library(ggplot2)
 
-a<-xyplot( FSMEgt + rki ~ time, data = masterall, type = "l",
-           xlab = "Time", ylab = "Weekly number",
-           auto.key = list( text = c( "GT", "RKI" ), points = FALSE, lines = TRUE, columns = 2 ) )
-a
-# en igy allnek neki:
+ggplot(data = masterall, aes(x = time)) +
+  geom_line(aes(y = rki, colour = "RKI")) +
+  geom_line(aes(y = FSMEgt, colour = "GTD")) +
+  scale_colour_manual("", 
+                      breaks = c("RKI", "GTD"),
+                      values = c("red", "blue")) +
+  scale_x_date(date_minor_breaks = "1 month") +
+  xlab(NULL) +
+  ylab("Weekly case number/Google search volume") +
+  theme_bw()
+
 acf( rkts, lag.max = 52 )
 acf( diff( rkts ), lag.max = 100 )
 acf( diff( rkts, 52 ), lag.max = 100 )
@@ -79,8 +86,8 @@ accuracy( fc, rkts17 )
 accuracy( fcGT, rkts17 )
 checkresiduals(fit)
 checkresiduals(fitGT)
-fitGT ## xreg is insignificant
-a<-AIC( fit, fitGT ) ## fit has a favorable AIC
+fitGT 
+a<-AIC( fit, fitGT ) 
 a
 dm.test( rkts17-fc$mean, rkts17-fcGT$mean ) #Diebold Mariano Test: not significant pedictive performance
 
