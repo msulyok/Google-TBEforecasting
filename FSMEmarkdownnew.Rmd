@@ -120,12 +120,18 @@ fcGT$x <- hs(rkts)
 plot(fcGT)
 
 layout(1)
-plot( fc, col = "black", ylab = "Number of cases", main = "Predictions", ylim=c(0, 55) )
+plot( fc, col = "black", PI= FALSE, ylab = "Number of cases", main = "Predictions", ylim=c(0, 55) )
 lines( fcGT$mean, col = "red" )
 lines( hs(rkts17), col = "black" )
 legend( "topleft", legend = c( "Optimal SARIMA", "Optimal SARIMA with GT", "Actual" ),
         fill = c( "blue", "red", "black" ), cex = 0.7 )
 
+par(mfrow=c(1,2))
 
+plot( fc, ylab = "Weekly case number", main="Prediction without GTD")
+lines( hs(rkts17), col = "black" )
+
+plot( fcGT, main="Prediction with GTD")
+lines( hs(rkts17), col = "black" )
 ```
 
